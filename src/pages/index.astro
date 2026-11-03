@@ -16,10 +16,8 @@ import { home, otherProjects, site } from '../data/site';
 
 const { work } = home;
 // Highlighted phrases in the hero summary (content is static, so set:html is safe).
-const summary = home.summary
-  .replace('bootcamp-trained and self-driven', '<mark class="marker">bootcamp-trained and self-driven</mark>')
-  .replace('teaching background', '<mark class="marker">teaching background</mark>')
-  .replace('tests, deployment and honest documentation', '<mark class="marker">tests, deployment and honest documentation</mark>');
+   // Text wrapped in ==double equals== in home.summary becomes a yellow highlight.
+   const summary = home.summary.replace(/==(.+?)==/g, '<mark class="marker">$1</mark>');
 ---
 <Base title={home.title} description={home.description}>
   <SiteHeader pop compact>

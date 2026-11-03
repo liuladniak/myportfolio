@@ -111,9 +111,9 @@ export const home = {
   description:
     "Portfolio of Liu Ladniak, a bootcamp-trained, self-driven full-stack developer: projects and background.",
   tagline:
-    "Full-stack developer. I build web apps from the interface to the server, and deploy them myself.",
+    "Full-stack developer. I build practical web applications, from user-facing interfaces to backend systems, and bring them to production.",
   summary:
-    "I’m bootcamp-trained and self-driven, with a teaching background and a civil engineering degree behind me. I like work that runs from the interface to the server, and I care about the parts that keep it running: tests, deployment and honest documentation.",
+    "I'm self-driven, with a ==teaching background== and a ==degree in civil engineering==. I enjoy solving problems, understanding how things work, and turning ideas into ==reliable software==. I care about clean code, thoughtful user experiences, and the details that make applications maintainable and ready for real-world use.",
   actions: [
     { label: "See my work", href: "/case-study" },
     { label: "View CV", href: site.cv, external: true },
@@ -133,35 +133,36 @@ export const home = {
     items: [
       {
         icon: "users",
-        title: "Teaching assistant at BrainStation",
-        note: "Mentored 50+ students on the Software Engineering program and reviewed their code.",
+        title: "Teaching & mentoring",
+        note: "Mentored 50+ students in BrainStation's Software Engineering program, reviewing code and helping them grow as developers.",
       },
       {
         icon: "globe",
-        title: "International teams",
-        note: "I have worked across countries, languages and time zones, with teams in the US, Canada and several EU countries.",
-      },
-      {
-        icon: "book",
-        title: "Always going deeper",
-        note: "Still studying programming and computer science, one layer at a time.",
+        title: "International collaboration",
+        note: "Worked with teams across the US, Canada, and Europe, adapting to different cultures, time zones, and ways of working.",
       },
       {
         icon: "compass",
-        title: "Love to travel",
-        note: "Always curious about new places and how people live in them.",
+        title: "Engineering mindset",
+        note: "With a degree in civil engineering, I enjoy understanding complex systems, solving practical problems, and thinking things through.",
+      },
+      {
+        icon: "book",
+        title: "Always learning",
+        note: "I keep expanding my knowledge of software engineering, exploring new technologies and digging deeper into how things work.",
       },
     ],
   },
   work: {
     kicker: "Projects",
     heading: "Selected work",
-    intro: "One project built end to end, with a few smaller ones beside it.",
+    intro:
+      "A closer look at the applications I've built, starting with one end-to-end project.",
     primary: {
       label: "Main case study",
       title: "CityGo",
       tagline: "Online booking for Istanbul city tours",
-      text: "Travellers browse tours, pick a date and pay online. The agency’s staff run bookings, guides and availability from an admin dashboard. I built both sides, the API behind them, a Python demo-data seeder and the deployment pipeline.",
+      text: "Travellers can browse tours, choose dates, and book online, while agency staff manage bookings, guides, and availability through an admin dashboard. I built both applications, the backend API, a Python script for generating realistic demo data, and the deployment pipeline.",
       tech: [
         "React",
         "TypeScript",
@@ -179,37 +180,37 @@ export const home = {
       sections: [
         {
           title: "App screens",
-          blurb: "The client app and the dashboard in six screens",
+          blurb: "A look at the client application and admin dashboard",
           href: "/case-study#screens",
           color: "#007aff",
         },
         {
           title: "Architecture",
-          blurb: "How the whole system fits together, as a diagram",
+          blurb: "How the application is structured and how its parts connect",
           href: "/case-study#architecture",
           color: "#34c759",
         },
         {
           title: "Client app",
-          blurb: "What a traveller can do, from search to payment",
+          blurb: "The traveller's journey, from discovering tours to booking",
           href: "/case-study#client",
           color: "#ff9500",
         },
         {
           title: "Admin dashboard",
-          blurb: "How staff run bookings, guides and availability",
+          blurb: "How staff manage bookings, guides, and availability",
           href: "/case-study#admin",
           color: "#af52de",
         },
         {
           title: "Under the hood",
-          blurb: "What is in place and what to watch",
+          blurb: "Technical decisions, implementation details, and deployment",
           href: "/case-study#hood",
           color: "#8e8e93",
         },
         {
           title: "What’s next",
-          blurb: "In progress and planned, stated plainly",
+          blurb: "Current limitations, planned improvements, and future ideas",
           href: "/case-study#next",
           color: "#5ac8fa",
         },
