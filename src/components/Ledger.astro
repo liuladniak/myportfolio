@@ -1,0 +1,25 @@
+---
+interface Row { area: string; color: string; place: string; chips: string[]; watch: string }
+interface Props { headers: string[]; rows: Row[] }
+const { headers, rows } = Astro.props;
+---
+<div class="overflow-hidden rounded-xl border border-line bg-white text-[13.5px] shadow-card">
+  <div class="mono-label hidden gap-6 border-b border-line bg-black/[0.02] px-5 py-2.5 text-muted md:grid md:grid-cols-[8rem_1.5fr_1fr]">
+    {headers.map((h) => <span>{h}</span>)}
+  </div>
+  <ul class="m-0 list-none p-0">
+    {rows.map((row) => (
+      <li class="grid gap-x-6 gap-y-2 border-t border-line px-5 py-3.5 first:border-t-0 md:grid-cols-[8rem_1.5fr_1fr]">
+        <p class="m-0 flex items-start gap-2 font-semibold"><i aria-hidden="true" class="mt-1.5 size-2 shrink-0 rounded-full" style={`background:${row.color}`}></i>{row.area}</p>
+        <div>
+          <p class="mono-label mb-1 text-muted md:hidden">{headers[1]}</p>
+          <p class="m-0 leading-relaxed text-body">{row.place}</p>
+        </div>
+        <div>
+          <p class="mono-label mb-1 text-muted md:hidden">{headers[2]}</p>
+          <p class="m-0 flex items-start gap-2 leading-relaxed text-muted"><i aria-hidden="true" class="mt-1.5 size-1.5 shrink-0 rounded-full bg-[#ff9500]"></i>{row.watch}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>

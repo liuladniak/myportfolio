@@ -1,0 +1,14 @@
+---
+import CopyButton from './CopyButton.astro';
+
+interface Props { label: string; href: string; copy: string; variant?: 'primary' | 'secondary' }
+const { label, href, copy, variant = 'secondary' } = Astro.props;
+const styles = {
+  primary: { box: 'border-brand bg-brand', link: 'text-white hover:bg-brand-deep', copy: 'border-l border-white/25 text-white hover:bg-brand-deep' },
+  secondary: { box: 'border-[#d0cab6] bg-white', link: 'text-ink hover:text-brand', copy: 'border-l border-line text-muted hover:text-ink' },
+}[variant];
+---
+<div class:list={['inline-flex overflow-hidden rounded-[9px] border', styles.box]}>
+  <a href={href} class:list={['inline-flex min-h-11 items-center px-5 text-sm font-medium no-underline transition-colors', styles.link]}>{label}</a>
+  <CopyButton value={copy} label={`Copy ${label}`} class={styles.copy} />
+</div>

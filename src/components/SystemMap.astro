@@ -1,0 +1,17 @@
+---
+import type { Part } from '../data/types';
+import Marker from './Marker.astro';
+import PartCard from './PartCard.astro';
+
+interface Props { heading: string; parts: Part[]; class?: string }
+const { heading, parts, class: className } = Astro.props;
+---
+<div class:list={['zone', className]}>
+  <Marker side="l" y="-1rem" /><Marker side="r" y="-1rem" />
+  <Marker side="l" y="calc(100% + 1rem)" /><Marker side="r" y="calc(100% + 1rem)" />
+  <h2 class="mono-label mb-6 text-muted">{heading}</h2>
+  <ol class:list={['grid gap-3.5', parts.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5']}>
+    {parts.map((part, i) => <li><PartCard index={i} {...part} /></li>)}
+  </ol>
+  <slot />
+</div>

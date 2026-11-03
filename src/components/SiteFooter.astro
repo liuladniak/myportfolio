@@ -1,0 +1,25 @@
+---
+import ContactLink from './ContactLink.astro';
+import { site } from '../data/site';
+
+const { email, github, linkedin } = site.contact;
+// The case study is the "Work" page, so it does not link to itself.
+const onWork = Astro.url.pathname.replace(/\/$/, '') === '/case-study';
+---
+<footer class="bg-(--page-bg)">
+  <div class="wrap pb-[max(3rem,env(safe-area-inset-bottom))] pt-14">
+    <h2 class="heading mb-2">{site.footer.title}</h2>
+    <p class="mb-6 max-w-[40rem] text-body">{site.footer.text}</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <ContactLink label="Email" href={`mailto:${email}`} copy={email} variant="primary" />
+      <ContactLink label="GitHub" href={github} copy={github} />
+      <ContactLink label="LinkedIn" href={linkedin} copy={linkedin} />
+    </div>
+    <ul class="mt-10 flex flex-wrap gap-x-6 text-[13px] text-muted">
+      <li class="py-1">© {new Date().getFullYear()} {site.name}</li>
+      <li><a href="/" class="inline-block py-1 hover:underline">Home</a></li>
+      {!onWork && <li><a href="/case-study" class="inline-block py-1 hover:underline">Work</a></li>}
+      <li><a href="/about" class="inline-block py-1 hover:underline">About & contact</a></li>
+    </ul>
+  </div>
+</footer>

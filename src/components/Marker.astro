@@ -1,0 +1,5 @@
+---
+interface Props { side: 'l' | 'r'; y?: string }
+const { side, y } = Astro.props;
+---
+<i aria-hidden="true" class="sq" data-side={side} style={y ? `--sq-y:${y}` : undefined}></i>

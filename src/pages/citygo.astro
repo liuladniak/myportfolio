@@ -1,0 +1,241 @@
+---
+import { Picture } from 'astro:assets';
+import FolioCross from '../components/FolioCross.astro';
+import FolioIcon from '../components/FolioIcon.astro';
+import FolioRule from '../components/FolioRule.astro';
+import FramedPicture from '../components/FramedPicture.astro';
+import Folio from '../layouts/Folio.astro';
+import { citygo } from '../data/citygo-folio';
+import { folioImage } from '../data/folio-images';
+
+const { header, plate, facts, overview, reasoning, architecture, delivery, reflection, footer } = citygo;
+const mono = 'font-mono-folio text-[11px] uppercase tracking-[0.2em]';
+const serif = 'font-serif-folio';
+const button = `${mono} inline-flex min-h-11 items-center gap-2 px-5 py-3`;
+const buttonStyle = {
+  primary: 'border border-folio-ink transition-colors hover:bg-folio-ink hover:text-folio-paper',
+  secondary: 'border border-folio-line hover:border-folio-ink',
+  quiet: 'text-folio-soft hover:text-folio-ink',
+};
+const numerals = ['i', 'ii', 'iii', 'iv', 'v'];
+---
+<Folio title={citygo.title} description={citygo.description}>
+  <header class="relative z-10 mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-6 py-6 md:px-10">
+    <a href={header.back.href} class={`${mono} inline-flex min-h-11 items-center gap-2 text-folio-soft hover:text-folio-ink`}>
+      <FolioIcon name="arrow-left" /> {header.back.label}
+    </a>
+    <a href="/" class={`${serif} inline-flex min-h-11 items-center text-2xl italic`} aria-label="Liu, home">{header.mark}</a>
+    <span class={`${mono} hidden text-folio-soft sm:block`}>{header.label}</span>
+  </header>
+
+  <main id="main">
+    <!-- Title plate -->
+    <section class="relative mx-auto max-w-[1240px] px-6 md:px-10">
+      <div class="relative border border-folio-line">
+        <FolioCross class="-left-1.5 -top-1.5" /><FolioCross class="-right-1.5 -top-1.5" />
+        <FolioCross class="-bottom-1.5 -left-1.5" /><FolioCross class="-bottom-1.5 -right-1.5" />
+        <div class="grid md:grid-cols-12">
+          <div class="folio-grid flex flex-col justify-between gap-14 p-8 md:col-span-8 md:p-14">
+            <div class="flex justify-between gap-4">
+              <span class={`${mono} text-folio-soft`}>{plate.number}</span>
+              <span class={`${mono} text-folio-soft`}>{plate.place}</span>
+            </div>
+            <div class="folio-rise">
+              <p class={`${mono} mb-6 text-folio-moss`}>{plate.kicker}</p>
+              <h1 class={`${serif} text-[clamp(3.5rem,9vw,8rem)] font-light leading-[0.85] tracking-tight`}>City<em class="text-folio-moss">Go</em><span class="text-folio-rust">.</span></h1>
+              <p class={`${serif} mt-6 max-w-xl text-2xl leading-snug text-folio-soft`}>{plate.lede}</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              {plate.links.map((link) => (
+                <a href={link.href} target="_blank" rel="noreferrer" class:list={[button, buttonStyle[link.style as keyof typeof buttonStyle]]}>
+                  {link.label} <FolioIcon name="arrow-up-right" />
+                </a>
+              ))}
+            </div>
+          </div>
+          <figure class="relative m-0 border-t border-folio-line md:col-span-4 md:max-h-[40rem] md:border-l md:border-t-0">
+            <div class="relative aspect-[4/3] overflow-hidden bg-folio-deep md:aspect-auto md:h-full">
+              <Picture src={folioImage(plate.figure.image)} alt={plate.figure.alt} width={800} height={1000} widths={[480, 720, 800]} sizes="(min-width: 48rem) 28rem, 92vw" fit="cover" formats={['avif', 'webp']} loading="eager" pictureAttributes={{ class: 'contents' }} class="folio-plate absolute inset-0 block h-full w-full object-cover" />
+            </div>
+            <figcaption class={`absolute bottom-5 left-5 ${serif} text-lg italic`}>{plate.figure.caption}</figcaption>
+          </figure>
+        </div>
+      </div>
+      <dl class="m-0 grid grid-cols-2 border-x border-b border-folio-line md:grid-cols-4">
+        {facts.map(([k, v], i) => (
+          <div class:list={['p-5 border-folio-line', i > 0 && 'md:border-l', i % 2 === 1 && 'border-l', i > 1 && 'border-t md:border-t-0']}>
+            <dt class={`${mono} text-folio-soft`}>{k}</dt>
+            <dd class={`${serif} m-0 mt-2 text-xl`}>{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <!-- Overview -->
+    <section class="mx-auto mt-28 max-w-[1240px] px-6 md:px-10">
+      <FolioRule index={overview.index} label={overview.label} />
+      <div class="mt-14 grid gap-12 md:grid-cols-12">
+        <h2 class={`${serif} m-0 text-5xl font-light leading-none md:col-span-4`}>{overview.heading[0]}<em class="text-folio-moss">{overview.heading[1]}</em></h2>
+        <div class="grid gap-10 sm:grid-cols-2 md:col-span-8">
+          <div>
+            <h3 class={`${mono} m-0 text-folio-rust`}>{overview.problem.label}</h3>
+            <p class={`${serif} mt-4 text-xl leading-snug text-folio-soft`}>{overview.problem.text}</p>
+          </div>
+          <div>
+            <h3 class={`${mono} m-0 text-folio-moss`}>{overview.response.label}</h3>
+            <p class={`${serif} mt-4 text-xl leading-snug text-folio-soft`}>{overview.response.text}</p>
+          </div>
+          <ul class="m-0 list-none space-y-3 border-t border-folio-line p-0 pt-6 sm:col-span-2 sm:grid sm:grid-cols-3 sm:gap-6 sm:space-y-0">
+            {overview.audiences.map(([who, what]) => (
+              <li>
+                <span class={`${serif} text-2xl italic`}>{who}</span>
+                <p class="m-0 mt-1 text-sm text-folio-soft">{what}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reasoning -->
+    <section class="relative mt-28 border-y border-folio-line bg-folio-deep/50">
+      <div class="mx-auto grid max-w-[1240px] md:grid-cols-12">
+        <div class="border-folio-line p-8 md:col-span-4 md:border-r md:p-14">
+          <FolioRule index={reasoning.index} label={reasoning.label} />
+          <h2 class={`${serif} m-0 mt-8 text-5xl font-light leading-none`}>{reasoning.heading[0]}<br />{reasoning.heading[1]}<em class="text-folio-moss">{reasoning.heading[2]}</em></h2>
+          <p class={`${serif} mt-6 text-lg text-folio-soft`}>{reasoning.intro}</p>
+          <div class="mt-10 max-w-xs border border-folio-line">
+            <FramedPicture src={folioImage(reasoning.image.name)} alt={reasoning.image.alt} ratio={[4, 5]} widths={[240, 320, 480]} sizes="20rem" imgClass="folio-plate" />
+          </div>
+        </div>
+        <ol class="m-0 list-none p-0 md:col-span-8">
+          {reasoning.items.map((d, i) => (
+            <li class="group grid grid-cols-[3rem_1fr] gap-6 border-b border-folio-line px-8 py-10 transition-colors last:border-0 hover:bg-folio-paper md:px-14">
+              <span class={`${serif} text-3xl italic text-folio-rust`}>{numerals[i]}.</span>
+              <div>
+                <h3 class={`${serif} m-0 text-3xl leading-tight`}>{d.q}</h3>
+                <p class="mt-4 max-w-2xl leading-relaxed text-folio-soft group-hover:text-folio-ink">{d.a}</p>
+                <p class={`${mono} mt-5 text-folio-moss`}>↳ {d.alt}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Architecture -->
+    <section class="mx-auto mt-28 max-w-[1240px] px-6 md:px-10">
+      <FolioRule index={architecture.index} label={architecture.label} />
+      <div class="mt-6 flex items-end justify-between gap-4">
+        <h2 class={`${serif} m-0 text-6xl font-light md:text-7xl`}>{architecture.heading}<span class="text-folio-rust">.</span></h2>
+        <span class={`${mono} hidden text-folio-soft sm:block`}>{architecture.figure}</span>
+      </div>
+
+      <div class="folio-grid relative mt-10 border border-folio-line p-6 md:p-12" role="img" aria-label="Two apps, the client and the dashboard, both call one shared Express and PostgreSQL root, which connects to the notifications queue, the chat service and third parties.">
+        <FolioCross class="-left-1.5 -top-1.5" /><FolioCross class="-bottom-1.5 -right-1.5" />
+        <div class="grid gap-4 md:grid-cols-2">
+          {architecture.apps.map((n) => (
+            <div class="border border-folio-ink bg-folio-paper p-5 text-center"><span class={`${serif} text-2xl italic`}>{n}</span></div>
+          ))}
+        </div>
+        <div class="flex justify-around py-3" aria-hidden="true"><span class="h-10 w-px bg-folio-ink"></span><span class="h-10 w-px bg-folio-ink"></span></div>
+        <div class="border-2 border-folio-moss bg-folio-paper p-6 text-center">
+          <span class={`${mono} text-folio-moss`}>{architecture.root.label}</span>
+          <p class={`${serif} m-0 mt-1 text-3xl`}>{architecture.root.text}</p>
+        </div>
+        <div class="flex justify-around py-3" aria-hidden="true">
+          <span class="h-10 w-px border-l border-dashed border-folio-ink"></span><span class="h-10 w-px border-l border-dashed border-folio-ink"></span><span class="h-10 w-px border-l border-dashed border-folio-ink"></span>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-3">
+          {architecture.services.map(([n, s]) => (
+            <div class="border border-dashed border-folio-ink bg-folio-paper p-4 text-center">
+              <p class={`${serif} m-0 text-xl`}>{n}</p>
+              <p class={`${mono} m-0 mt-1 text-folio-soft`}>{s}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <ol class="m-0 mt-16 list-none divide-y divide-folio-line border-y border-folio-line p-0">
+        {architecture.layers.map((l, i) => (
+          <li class="grid gap-3 py-7 md:grid-cols-12 md:items-baseline">
+            <span class={`${mono} text-folio-soft md:col-span-1`}>0{i + 1}</span>
+            <div class="md:col-span-3">
+              <h3 class={`${serif} m-0 text-3xl`}>{l.name}</h3>
+              <code class="font-mono-folio text-xs text-folio-moss">{l.path}</code>
+            </div>
+            <p class="m-0 text-folio-soft md:col-span-4">{l.note}</p>
+            <span class={`${mono} text-folio-ink md:col-span-4 md:text-right`}>{l.stack}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- Lifecycle + delivery -->
+    <section class="mx-auto mt-28 max-w-[1240px] px-6 md:px-10">
+      <FolioRule index={delivery.index} label={delivery.label} />
+      <div class="mt-14 grid gap-14 md:grid-cols-2">
+        <div>
+          <h3 class={`${serif} m-0 text-4xl font-light`}>{delivery.lifecycleHeading[0]}<em class="text-folio-moss">{delivery.lifecycleHeading[1]}</em></h3>
+          <ol class="m-0 mt-8 list-none border-l border-folio-line p-0">
+            {delivery.lifecycle.map(([state, note], i) => (
+              <li class="relative pb-6 pl-8 last:pb-0">
+                <span aria-hidden="true" class:list={['absolute -left-[5px] top-2 size-2.5 rounded-full border border-folio-ink', i === 1 ? 'bg-folio-moss' : i === 4 ? 'bg-folio-rust' : 'bg-folio-paper']}></span>
+                <span class={`${serif} text-2xl`}>{state}</span>
+                <span class={`${mono} ml-3 text-folio-soft`}>{note}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div>
+          <h3 class={`${serif} m-0 text-4xl font-light`}>{delivery.deliveryHeading[0]}<em class="text-folio-moss">{delivery.deliveryHeading[1]}</em></h3>
+          <div class="mt-8 space-y-4">
+            {delivery.branches.map(([branch, env]) => (
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border border-folio-line bg-folio-paper p-4">
+                <code class="font-mono-folio text-sm text-folio-moss">{branch}</code>
+                <span aria-hidden="true" class="hidden h-px min-w-6 flex-1 border-t border-dashed border-folio-ink sm:block"></span>
+                <span class={`${mono} text-folio-soft`}>Actions → Docker</span>
+                <span aria-hidden="true" class="hidden h-px min-w-6 flex-1 border-t border-dashed border-folio-ink sm:block"></span>
+                <span class={`${serif} text-lg italic`}>{env}</span>
+              </div>
+            ))}
+          </div>
+          <p class="mt-6 leading-relaxed text-folio-soft">{delivery.text}</p>
+        </div>
+      </div>
+      <div class="mt-16 grid grid-cols-3 border border-folio-line">
+        {delivery.images.map((name, i) => (
+          <FramedPicture src={folioImage(name)} alt="" ratio={[4, 3]} widths={[240, 400, 640]} sizes="(min-width: 80rem) 26rem, 32vw" imgClass="folio-plate" class:list={[i > 0 && 'border-l border-folio-line']} />
+        ))}
+      </div>
+    </section>
+
+    <!-- Reflection -->
+    <section class="mx-auto max-w-[1240px] px-6 py-28 md:px-10">
+      <div class="grid items-center gap-12 md:grid-cols-12">
+        <div class="border border-folio-line md:col-span-4">
+          <FramedPicture src={folioImage(reflection.image.name)} alt={reflection.image.alt} ratio={[3, 4]} widths={[320, 480, 640]} sizes="(min-width: 48rem) 22rem, 92vw" imgClass="folio-plate" />
+        </div>
+        <div class="md:col-span-7 md:col-start-6">
+          <span class={`${mono} text-folio-soft`}>{reflection.index}</span>
+          <blockquote class={`${serif} m-0 mt-6 text-[clamp(1.8rem,3.2vw,2.8rem)] font-light leading-[1.15]`}>
+            {reflection.quote[0]}<em class="text-folio-moss">{reflection.quote[1]}</em>{reflection.quote[2]}
+          </blockquote>
+          <ul class="m-0 mt-10 list-none space-y-1 p-0">
+            {reflection.next.map((t) => <li class={`${mono} text-folio-ink`}>↳ {t}</li>)}
+          </ul>
+          <a href={reflection.link.href} class={`${serif} group mt-12 inline-flex min-h-11 items-center gap-4 border-b border-folio-ink pb-2 text-2xl italic`}>
+            {reflection.link.label} <FolioIcon name="arrow-up-right" class="size-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 motion-reduce:transition-none" />
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mx-auto max-w-[1240px] px-6 pb-10 md:px-10">
+    <div class="flex flex-wrap justify-between gap-4 border-t border-folio-line pt-6">
+      <span class={`${mono} text-folio-soft`}>{footer.left}</span>
+      <span class={`${mono} text-folio-soft`}>{footer.right}</span>
+    </div>
+  </footer>
+</Folio>

@@ -1,0 +1,15 @@
+---
+import type { ProjectPage } from '../data/types';
+import Carousel from './Carousel.astro';
+import H2 from './H2.astro';
+import SectionTitle from './SectionTitle.astro';
+
+interface Props { project: ProjectPage }
+const { project } = Astro.props;
+const { kicker, heading } = project.sections.screens;
+---
+<section id="screens" class="wrap scroll-mt-6 pt-16 sm:pt-20">
+  <SectionTitle>{kicker}</SectionTitle>
+  <H2>{heading}</H2>
+  <Carousel slides={project.screens} label={heading} />
+</section>

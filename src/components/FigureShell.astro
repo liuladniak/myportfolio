@@ -1,0 +1,8 @@
+---
+interface Props { n: number; caption: string }
+const { n, caption } = Astro.props;
+---
+<figure class="card ticks my-8 p-4">
+  <figcaption class="mono-label mb-3.5 text-muted">Fig. {n} · {caption}</figcaption>
+  <slot />
+</figure>

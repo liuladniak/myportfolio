@@ -1,0 +1,5 @@
+---
+interface Props { size?: 'md' | 'lg' }
+const { size = 'md' } = Astro.props;
+---
+<h2 class:list={['mb-5 mt-3.5 text-ink', size === 'lg' ? 'heading-lg' : 'heading']}><slot /></h2>

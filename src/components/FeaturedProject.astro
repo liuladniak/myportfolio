@@ -1,0 +1,46 @@
+---
+import Button from './Button.astro';
+import Chips from './Chips.astro';
+
+interface Props {
+  image?: { src: string; alt: string };
+  project: {
+    label: string; title: string; tagline: string; text: string; tech: string[];
+    actions: { label: string; href: string }[];
+    sectionsLabel: string; sections: { title: string; href: string; blurb: string; color: string }[];
+  };
+}
+const { project, image } = Astro.props;
+---
+<article class="card-lift grid overflow-hidden lg:grid-cols-[1fr_1.05fr]">
+  {image && <img src={image.src} alt={image.alt} width="1600" height="430" loading="lazy" decoding="async" class="block h-32 w-full object-cover object-[35%_50%] sm:h-auto sm:aspect-[4/1] lg:col-span-2" />}
+  <div class="p-6 sm:p-8">
+    <p class="mono-label mb-4 flex items-center gap-2 font-medium text-brand">
+      <span class="rounded-full bg-brand px-2 py-0.5 text-white">01</span>{project.label}
+    </p>
+    <h3 class="text-[1.625rem] font-semibold leading-tight tracking-tight">{project.title}</h3>
+    <p class="mb-4 mt-1 text-base text-body">{project.tagline}</p>
+    <p class="mb-5 max-w-[32rem] leading-[1.7] text-body">{project.text}</p>
+    <div class="mb-6"><Chips items={project.tech} /></div>
+    <div class="flex flex-wrap gap-3">
+      {project.actions.map((action, i) => <Button href={action.href} variant={i === 0 ? 'primary' : 'secondary'}>{action.label}</Button>)}
+    </div>
+  </div>
+  <div class="border-t border-line bg-[#f8f6ee] lg:border-l lg:border-t-0">
+    <p class="mono-label border-b border-line px-5 py-3 text-muted">{project.sectionsLabel}</p>
+    <ol class="m-0 list-none p-0">
+      {project.sections.map((section, i) => (
+        <li class="border-t border-line first:border-t-0">
+          <a href={section.href} class="group grid min-h-11 grid-cols-[2.25rem_1fr_auto] items-center gap-x-3 px-5 py-3 text-ink no-underline transition-colors hover:bg-[#f8f6ee]">
+            <span class="flex items-center gap-2"><i aria-hidden="true" class="size-2 rounded-full" style={`background:${section.color}`}></i><span class="mono-label text-muted">{String(i + 1).padStart(2, '0')}</span></span>
+            <span>
+              <b class="block text-sm font-semibold">{section.title}</b>
+              <span class="block text-[13px] leading-snug text-muted">{section.blurb}</span>
+            </span>
+            <span aria-hidden="true" class="text-brand transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none">→</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</article>

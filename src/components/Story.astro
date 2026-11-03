@@ -1,0 +1,44 @@
+---
+import type { StoryData } from '../data/types';
+import SectionTitle from './SectionTitle.astro';
+import FlowFigure from './FlowFigure.astro';
+import SamplesFigure from './SamplesFigure.astro';
+import StoryFigure from './StoryFigure.astro';
+
+interface Props { story: StoryData; kicker: string; id?: string; featuresTitle?: string }
+const { story, kicker, id = 'story', featuresTitle = 'Everything it does' } = Astro.props;
+const { lede, blocks, closing, features } = story;
+let figureNumber = 0;
+// Every block that isn't prose is a numbered figure.
+const numbered = blocks.map((block) => ('text' in block ? block : { ...block, n: ++figureNumber }));
+// Content is static and authored here, so inline emphasis can be rendered as HTML.
+const emphasise = (text: string) => text.replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-ink">$1</strong>');
+---
+<section id={id} class="wrap scroll-mt-6 pt-16 sm:pt-20">
+  <SectionTitle>{kicker}</SectionTitle>
+  <div class="mt-6 flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-20">
+    <div class="max-w-[40rem] flex-1 space-y-5 text-base leading-[1.72] text-body">
+      <p class="mb-7 text-[clamp(1.25rem,2.4vw,1.375rem)] font-medium leading-snug tracking-tight text-ink">{lede}</p>
+      {numbered.map((block) =>
+        'text' in block ? <p set:html={emphasise(block.text)} />
+        : 'figure' in block ? <StoryFigure kind={block.figure} n={block.n} />
+        : 'flow' in block ? <FlowFigure {...block.flow} n={block.n} />
+        : <SamplesFigure {...block.samples} n={block.n} />
+      )}
+      <p class="text-sm text-muted">{closing}</p>
+    </div>
+    {features && (
+      <aside aria-labelledby={`${id}-does`} class="lg:sticky lg:top-6 lg:w-72 lg:shrink-0">
+        <h3 id={`${id}-does`} class="mb-3.5 text-[1.0625rem] font-semibold tracking-tight">{featuresTitle}</h3>
+        {features.map((group) => (
+          <section class="border-t border-line pb-1.5 pt-3.5">
+            <h4 class="mono-label mb-2 flex items-center gap-2 text-muted">
+              <i aria-hidden="true" class="size-[7px] rounded-full" style={`background:${group.color}`}></i>{group.name}
+            </h4>
+            <ul class="mb-2">{group.items.map((item) => <li class="mb-1.5 leading-snug">{item}</li>)}</ul>
+          </section>
+        ))}
+      </aside>
+    )}
+  </div>
+</section>

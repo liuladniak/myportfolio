@@ -1,0 +1,10 @@
+---
+import type { Chapter } from '../data/types';
+import Decisions from './Decisions.astro';
+import Story from './Story.astro';
+
+interface Props { chapter: Chapter }
+const { chapter } = Astro.props;
+---
+<Story story={chapter.story} kicker={chapter.kicker} id={chapter.id} featuresTitle={chapter.featuresTitle} />
+{chapter.decisions && <Decisions decisions={chapter.decisions} id={`${chapter.id}-decisions`} />}

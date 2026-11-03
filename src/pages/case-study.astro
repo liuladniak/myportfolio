@@ -1,0 +1,122 @@
+---
+import Button from '../components/Button.astro';
+import Carousel from '../components/Carousel.astro';
+import Chips from '../components/Chips.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import H2 from '../components/H2.astro';
+import Ledger from '../components/Ledger.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SystemDiagram from '../components/SystemDiagram.astro';
+import { Image } from 'astro:assets';
+import heroImage from '../assets/case/hero.png';
+import Base from '../layouts/Base.astro';
+import { caseStudy as c, screens } from '../data/citygo-case';
+import { diagram } from '../data/citygo-diagram';
+---
+<Base title={c.title} description={c.description}>
+  <SiteHeader pop>
+    <div class="grid items-stretch gap-10 md:grid-cols-12 md:gap-12">
+      <div class="flex flex-col justify-center md:col-span-7">
+        <p class="mono-label mb-4 flex flex-wrap items-center gap-x-3 gap-y-1"><span class="text-muted">{c.hero.label}</span><span aria-hidden="true" class="text-line">/</span><span class="font-medium text-brand">{c.hero.kicker}</span></p>
+        <h1 class="display">CityGo</h1>
+        <p class="mt-4 max-w-[34rem] text-[clamp(1.0625rem,2vw,1.25rem)] leading-snug tracking-tight text-body">{c.hero.lede}</p>
+        <p class="mb-0 mt-4 max-w-[34rem] text-[13px] leading-relaxed text-muted">{c.hero.note}</p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          {c.hero.links.map((link) => link.variant === 'quiet'
+            ? <a href={link.href} target="_blank" rel="noreferrer" class="inline-flex min-h-11 items-center px-3 font-medium text-muted hover:text-ink">{link.label} ↗</a>
+            : <Button href={link.href} variant={link.variant as 'primary' | 'secondary'} external>{link.label} ↗</Button>)}
+        </div>
+      </div>
+      <!-- Frameless: a transparent PNG of the two apps sits straight on the page. -->
+      <div class="flex items-center justify-end md:col-span-5">
+        <Image src={heroImage} alt={c.hero.imageAlt} widths={[480, 720, 1000]} sizes="(min-width: 48rem) 30rem, 92vw" loading="eager" class="block h-auto w-full md:w-[calc(100%+4rem)] md:max-w-none" />
+      </div>
+    </div>
+    <dl class="m-0 mt-10 grid grid-cols-2 overflow-hidden rounded-xl border border-line bg-white shadow-card md:grid-cols-4">
+      {c.hero.facts.map(([k, v], i) => (
+        <div class:list={['border-line p-5', i % 2 === 1 && 'border-l', i > 1 && 'border-t md:border-t-0', i > 0 && 'md:border-l']}>
+          <dt class="mono-label text-muted">{k}</dt>
+          <dd class="m-0 mt-1.5 flex items-center gap-2 text-base font-semibold">{k === 'Status' && <i aria-hidden="true" class="size-2 rounded-full bg-[#34c759]"></i>}{v}</dd>
+        </div>
+      ))}
+    </dl>
+  </SiteHeader>
+
+  <main id="main">
+    <!-- Overview -->
+    <section id="overview" class="wrap scroll-mt-6 pt-12 sm:pt-16">
+      <SectionTitle>{c.overview.kicker}</SectionTitle>
+      <div class="grid gap-x-12 md:grid-cols-12">
+        <div class="md:col-span-4"><H2>{c.overview.heading}</H2></div>
+        <div class="grid gap-x-10 gap-y-8 sm:grid-cols-2 md:col-span-8 md:pt-2">
+          <div>
+            <h3 class="mono-label m-0 font-medium text-[#9c110d]">{c.overview.problem.label}</h3>
+            <p class="mt-3 text-[0.9375rem] leading-[1.7] text-body">{c.overview.problem.text}</p>
+          </div>
+          <div>
+            <h3 class="mono-label m-0 font-medium text-brand">{c.overview.response.label}</h3>
+            <p class="mt-3 text-[0.9375rem] leading-[1.7] text-body">{c.overview.response.text}</p>
+          </div>
+          <ul class="m-0 list-none gap-6 border-t border-line p-0 pt-6 sm:col-span-2 sm:grid sm:grid-cols-3">
+            {c.overview.audiences.map(([who, what, color]) => (
+              <li class="mb-4 sm:mb-0">
+                <p class="m-0 flex items-center gap-2 text-base font-semibold"><i aria-hidden="true" class="size-2 rounded-full" style={`background:${color}`}></i>{who}</p>
+                <p class="m-0 mt-1 text-[13px] leading-snug text-muted">{what}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- App screens -->
+    <section id="screens" class="wrap scroll-mt-6 pt-16 sm:pt-24">
+      <SectionTitle>{screens.kicker}</SectionTitle>
+      <H2>{screens.heading}</H2>
+      <div class="mt-3"><Carousel slides={screens.slides} label={screens.heading} /></div>
+    </section>
+
+    <!-- Architecture -->
+    <section id="architecture" class="wrap scroll-mt-6 pt-16 sm:pt-24">
+      <SectionTitle>{c.architecture.kicker}</SectionTitle>
+      <H2>{c.architecture.heading}</H2>
+      <p class="-mt-2 mb-8 max-w-[38rem] text-body">{c.architecture.intro}</p>
+      <SystemDiagram {...diagram} />
+    </section>
+
+    <FeatureGrid id="client" {...c.client} />
+    <FeatureGrid id="admin" {...c.admin} />
+
+    <!-- Under the hood -->
+    <section id="hood" class="wrap scroll-mt-6 pt-16 sm:pt-24">
+      <SectionTitle>{c.hood.kicker}</SectionTitle>
+      <H2>{c.hood.heading}</H2>
+      <div class="mt-3"><Ledger headers={c.hood.headers} rows={c.hood.rows} /></div>
+    </section>
+
+    <!-- What's next -->
+    <section id="next" class="wrap scroll-mt-6 pb-20 pt-16 sm:pb-28 sm:pt-24">
+      <SectionTitle>{c.next.kicker}</SectionTitle>
+      <H2>{c.next.heading}</H2>
+      <p class="-mt-2 mb-8 max-w-[38rem] text-body">{c.next.intro}</p>
+      <ul class="m-0 grid list-none gap-5 p-0 md:grid-cols-3">
+        {c.next.groups.map((g) => (
+          <li class="card p-5">
+            <h3 class="mono-label m-0 mb-4 font-medium text-brand">{g.title}</h3>
+            {g.inProgress.length > 0 && (
+              <div class="mb-4">
+                <p class="mono-label mb-1.5 text-muted">In progress</p>
+                <Chips items={g.inProgress} inProgress />
+              </div>
+            )}
+            <p class="mono-label mb-1.5 text-muted">Planned</p>
+            <Chips items={g.planned} planned />
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+  <SiteFooter />
+</Base>

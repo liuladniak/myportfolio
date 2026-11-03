@@ -1,0 +1,34 @@
+---
+import type { ProjectPage } from '../data/types';
+import ChipRow from './ChipRow.astro';
+import H2 from './H2.astro';
+import SectionTitle from './SectionTitle.astro';
+
+interface Props { project: ProjectPage }
+const { project } = Astro.props;
+const { notes, testing, deployment } = project.engineering;
+---
+<section id="engineering" class="wrap scroll-mt-6 pt-16 sm:pt-20">
+  <SectionTitle>Under the hood</SectionTitle>
+  <H2>Engineering, testing and delivery</H2>
+  <div class="grid items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <article class="card p-5">
+      <h3 class="mb-3 font-semibold">Engineering notes</h3>
+      <ul class="list-disc space-y-2 pl-5 text-[13px]">{notes.map((note) => <li>{note}</li>)}</ul>
+    </article>
+    <article class="card space-y-3.5 p-5">
+      <h3 class="font-semibold">Testing</h3>
+      <p class="text-4xl font-semibold leading-none tracking-tight text-brand">{testing.count}</p>
+      <p class="text-[13px]">{testing.text}</p>
+      {testing.manual.length > 0 && <ChipRow label="Manual" items={testing.manual} />}
+      {testing.inProgress && testing.inProgress.length > 0 && <ChipRow label="In progress" items={testing.inProgress} inProgress />}
+      <ChipRow label="Planned" items={testing.planned} planned />
+    </article>
+    <article class="card space-y-3.5 p-5 md:col-span-2 lg:col-span-1">
+      <h3 class="font-semibold">Deployment</h3>
+      <ChipRow label="Environments" items={deployment.environments} />
+      <p class="text-[13px]">{deployment.text}</p>
+      <ChipRow label="Hosting" items={deployment.hosting} />
+    </article>
+  </div>
+</section>

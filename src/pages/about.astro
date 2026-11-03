@@ -1,0 +1,59 @@
+---
+import FramedPicture from '../components/FramedPicture.astro';
+import CopyButton from '../components/CopyButton.astro';
+import SiteFootnote from '../components/SiteFootnote.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Base from '../layouts/Base.astro';
+import portrait from '../assets/about-portrait.jpg';
+import { about, site } from '../data/site';
+
+// Everything a recruiter needs, in one place near the top.
+const links = [
+  { label: 'Email', value: site.contact.email, href: `mailto:${site.contact.email}`, copy: site.contact.email },
+  { label: 'GitHub', value: site.contact.github.replace('https://', ''), href: site.contact.github, copy: site.contact.github },
+  { label: 'LinkedIn', value: site.contact.linkedin.replace('https://www.', ''), href: site.contact.linkedin, copy: site.contact.linkedin },
+  { label: 'CV', value: 'Open the PDF', href: site.cv, copy: undefined, external: true },
+  { label: 'Based', value: `${site.availability.location} · ${site.availability.setup}`, href: undefined, copy: undefined, external: false },
+];
+---
+<Base title={about.title} description={about.description}>
+  <SiteHeader pop compact>
+    <div class="grid items-start gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:gap-16">
+      <div class="max-w-[40rem]">
+        <p class="mb-5 flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span class="mono-label font-medium text-signature">{about.kicker}</span>
+          <span class="mono-label text-muted">Field Notes — Vol. 06</span>
+        </p>
+        <h1 class="display">{about.heading}</h1>
+        <div class="mb-8 mt-5 flex max-w-[36rem] flex-col gap-4 text-base leading-[1.75] text-body sm:text-[1.0625rem]">
+          {about.story.map((text) => <p class="m-0">{text}</p>)}
+        </div>
+        <ul id="contact" class="card m-0 max-w-xl scroll-mt-20 list-none p-0">
+          {links.map((link) => (
+            <li class="flex items-center border-t border-line first:border-t-0">
+              {link.href ? (
+                <a href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined} class="grid min-h-11 min-w-0 flex-1 grid-cols-[4.75rem_1fr] items-center gap-3 px-4 py-3.5 text-ink no-underline hover:text-brand">
+                  <span class="mono-label text-muted">{link.label}</span>
+                  <span class="break-all text-sm font-medium">{link.value}{link.external && <span aria-hidden="true"> ↗</span>}</span>
+                </a>
+              ) : (
+                <div class="grid min-h-11 min-w-0 flex-1 grid-cols-[4.75rem_1fr] items-center gap-3 px-4 py-3.5 text-ink">
+                  <span class="mono-label text-muted">{link.label}</span>
+                  <span class="text-sm font-medium">{link.value}</span>
+                </div>
+              )}
+              {link.copy && <CopyButton value={link.copy} showText class="mr-2 rounded-lg text-muted hover:bg-[var(--chip-bg)] hover:text-ink" />}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="ticks m-2 w-full max-w-[15rem] justify-self-center lg:mt-[7.5rem] lg:max-w-[17rem] lg:justify-self-end">
+        <figure class="m-0 overflow-hidden rounded-[10px] border border-line bg-white shadow-card">
+          <FramedPicture src={portrait} alt={about.portrait.alt} ratio={[3, 4]} widths={[240, 360, 540]} sizes="(min-width: 64rem) 17rem, 15rem" loading="eager" imgClass="sepia-[.18] saturate-[.92]" />
+        </figure>
+      </div>
+    </div>
+  </SiteHeader>
+  <main id="main"></main>
+  <SiteFootnote />
+</Base>

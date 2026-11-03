@@ -1,0 +1,23 @@
+---
+import Chips from './Chips.astro';
+import Marker from './Marker.astro';
+
+interface Props { label: string; items: { name: string; color: string; note: string; tags: string[] }[]; class?: string }
+const { label, items, class: className } = Astro.props;
+const columns = { 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4', 5: 'lg:grid-cols-5' }[items.length] ?? 'lg:grid-cols-4';
+---
+<div class:list={['zone', className]}>
+  <Marker side="l" y="-1rem" /><Marker side="r" y="-1rem" />
+  <Marker side="l" y="calc(100% + 1rem)" /><Marker side="r" y="calc(100% + 1rem)" />
+  <h2 class="mono-label mb-6 font-medium text-brand">{label}</h2>
+  <ol class:list={['grid gap-x-8 gap-y-7 sm:grid-cols-2', columns]}>
+    {items.map((item) => (
+      <li class="relative border-t border-guide pt-4">
+        <i aria-hidden="true" class="absolute -top-[4px] left-0 size-[7px] border border-brand bg-white"></i>
+        <p class="mb-1 flex items-center gap-2 font-semibold text-ink"><i aria-hidden="true" class="size-2 rounded-full" style={`background:${item.color}`}></i>{item.name}</p>
+        <p class:list={['text-[13px] leading-snug text-muted', item.tags.length > 0 && 'mb-3']}>{item.note}</p>
+        {item.tags.length > 0 && <Chips items={item.tags} />}
+      </li>
+    ))}
+  </ol>
+</div>

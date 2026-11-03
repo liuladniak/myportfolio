@@ -1,0 +1,24 @@
+---
+import H2 from './H2.astro';
+import SectionTitle from './SectionTitle.astro';
+
+interface Props { id: string; kicker: string; heading: string; intro: string; items: { title: string; color: string; text: string }[] }
+const { id, kicker, heading, intro, items } = Astro.props;
+---
+<section id={id} class="wrap scroll-mt-6 pt-16 sm:pt-24">
+  <SectionTitle>{kicker}</SectionTitle>
+  <div class="grid gap-x-12 gap-y-8 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <H2>{heading}</H2>
+      <p class="-mt-2 text-body">{intro}</p>
+    </div>
+    <ul class="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:col-span-8 lg:mt-3.5">
+      {items.map((it) => (
+        <li class="card p-5">
+          <h3 class="m-0 flex items-center gap-2 text-base font-semibold tracking-tight"><i aria-hidden="true" class="size-2 rounded-full" style={`background:${it.color}`}></i>{it.title}</h3>
+          <p class="mt-2 text-[13.5px] leading-relaxed text-body">{it.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,17 @@
+---
+import type { ProjectPage } from '../data/types';
+import ChipRow from './ChipRow.astro';
+import H2 from './H2.astro';
+import SectionTitle from './SectionTitle.astro';
+interface Props { project: ProjectPage }
+const { project } = Astro.props;
+const inProgress = project.roadmapInProgress ?? [];
+---
+<section id="roadmap" class="wrap scroll-mt-6 pb-16 pt-16 sm:pt-20">
+  <SectionTitle>Roadmap</SectionTitle>
+  <H2>What’s next</H2>
+  <div class="space-y-5">
+    {inProgress.length > 0 && <ChipRow label="In progress" items={inProgress} inProgress />}
+    <ChipRow label={inProgress.length > 0 ? 'Planned' : 'Next'} items={project.roadmap} planned />
+  </div>
+</section>

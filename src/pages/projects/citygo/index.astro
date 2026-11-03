@@ -1,0 +1,38 @@
+---
+import Button from '../../../components/Button.astro';
+import H2 from '../../../components/H2.astro';
+import PartTiers from '../../../components/PartTiers.astro';
+import SectionTitle from '../../../components/SectionTitle.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import Base from '../../../layouts/Base.astro';
+import { citygo, hubParts } from '../../../data/site';
+---
+<Base title={`${citygo.title} — Liu Ladniak`} description={citygo.description}>
+  <SiteHeader>
+    <nav aria-label="Breadcrumb" class="mono-label mb-6 text-muted">
+      <ol class="flex flex-wrap gap-x-2">
+        {citygo.crumbs.map((crumb, i) => (
+          <li>{i > 0 && <span aria-hidden="true">/ </span>}{crumb.href ? <a href={crumb.href} class="hover:underline">{crumb.label}</a> : <span aria-current="page">{crumb.label}</span>}</li>
+        ))}
+      </ol>
+    </nav>
+    <div class="max-w-3xl">
+      <h1 class="display">{citygo.title}</h1>
+      <p class="mb-5 mt-4 text-[clamp(1.0625rem,2vw,1.25rem)] leading-snug tracking-tight text-body">{citygo.tagline}</p>
+      <p class="mb-8 max-w-[40rem] text-base leading-relaxed text-body">{citygo.text}</p>
+      <div class="flex flex-wrap gap-3">
+        {citygo.actions.map((action, i) => <Button href={action.href} variant={i === 0 ? 'primary' : 'secondary'}>{action.label}</Button>)}
+      </div>
+    </div>
+  </SiteHeader>
+  <main id="main" class="wrap pb-20 sm:pb-28">
+    <section id="parts" class="scroll-mt-6 pt-16 sm:pt-20">
+      <SectionTitle>{citygo.parts.kicker}</SectionTitle>
+      <H2>{citygo.parts.heading}</H2>
+      <p class="-mt-2 mb-8 max-w-[38rem] text-body">{citygo.parts.intro}</p>
+      <PartTiers parts={hubParts} appsLabel={citygo.parts.appsLabel} platformLabel={citygo.parts.platformLabel} bridge={citygo.parts.bridge} />
+    </section>
+  </main>
+  <SiteFooter />
+</Base>

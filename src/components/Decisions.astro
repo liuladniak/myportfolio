@@ -1,0 +1,27 @@
+---
+import type { ProjectPage } from '../data/types';
+import H2 from './H2.astro';
+import SectionTitle from './SectionTitle.astro';
+
+interface Props { decisions: NonNullable<ProjectPage['decisions']>; id?: string }
+const { decisions, id = 'decisions' } = Astro.props;
+const columns = [['considered', 'Considered'], ['chose', 'Chose'], ['why', 'Why']] as const;
+---
+<section id={id} class="wrap scroll-mt-6 pt-16 sm:pt-20">
+  <SectionTitle>{decisions.kicker}</SectionTitle>
+  <H2>{decisions.heading}</H2>
+  <ol class="card ticks px-5 py-1.5">
+    {decisions.items.map((item) => (
+      <li class="border-t border-line py-4 first:border-t-0">
+        <dl class="grid gap-3 md:grid-cols-[1fr_1fr_1.7fr] md:gap-7">
+          {columns.map(([key, label]) => (
+            <div>
+              <dt class="mono-label mb-1 text-muted">{label}</dt>
+              <dd class:list={['leading-normal', key === 'chose' ? 'font-semibold text-ink' : 'text-body']}>{item[key]}</dd>
+            </div>
+          ))}
+        </dl>
+      </li>
+    ))}
+  </ol>
+</section>

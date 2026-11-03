@@ -1,0 +1,39 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/geist-mono';
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource-variable/fraunces/wght-italic.css';
+import '@fontsource/mrs-saint-delafield';
+import '../styles/global.css';
+import Guides from '../components/Guides.astro';
+import SiteBar from '../components/SiteBar.astro';
+
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+// Every tab reads "<Page> — Liu Ladniak" (the homepage already starts with the name).
+const fullTitle = title.startsWith('Liu Ladniak') || title.endsWith('Liu Ladniak') ? title : `${title} — Liu Ladniak`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f8f5ee" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:shadow-card">Skip to content</a>
+    <div class="relative">
+      <SiteBar />
+      <slot />
+      <Guides />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+---
+import Button from '../components/Button.astro';
+import SiteFootnote from '../components/SiteFootnote.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Base from '../layouts/Base.astro';
+import heroImage from '../assets/home-hero.svg';
+---
+<Base title="Page not found — Liu Ladniak" description="This page does not exist.">
+  <SiteHeader pop compact>
+    <div class="grid items-center gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
+      <div class="max-w-[36rem]">
+        <p class="mb-5"><span class="mono-label font-medium text-signature">Error 404</span></p>
+        <h1 class="display">Page not found</h1>
+        <p class="mb-7 mt-4 text-[clamp(1.0625rem,2vw,1.25rem)] leading-snug tracking-tight text-body">The page you were looking for has moved, or it never existed. The work is still here.</p>
+        <div class="flex flex-wrap gap-3">
+          <Button href="/">Back to the homepage</Button>
+          <Button href="/case-study" variant="secondary">Read the CityGo case study</Button>
+        </div>
+      </div>
+      <div class="ticks m-2 w-full max-w-[13rem] justify-self-center lg:justify-self-end">
+        <figure class="m-0 overflow-hidden rounded-[10px] border border-line bg-white shadow-card">
+          <img src={heroImage.src} alt="" width="459" height="572" decoding="async" class="block aspect-[4/5] w-full object-contain p-3 mix-blend-multiply" />
+        </figure>
+      </div>
+    </div>
+  </SiteHeader>
+  <main id="main"></main>
+  <SiteFootnote />
+</Base>

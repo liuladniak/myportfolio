@@ -1,0 +1,78 @@
+---
+import Button from '../components/Button.astro';
+import FeaturedProject from '../components/FeaturedProject.astro';
+import H2 from '../components/H2.astro';
+import OtherProject from '../components/OtherProject.astro';
+import SectionTitle from '../components/SectionTitle.astro';
+import ContactSection from '../components/ContactSection.astro';
+import SiteFootnote from '../components/SiteFootnote.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import FunFacts from '../components/FunFacts.astro';
+import Base from '../layouts/Base.astro';
+import heroImage from '../assets/home-hero.svg';
+import citygoBrand from '../assets/citygo-brand.svg';
+import sunsetShot from '../assets/sunset-pizza.png';
+import { home, otherProjects, site } from '../data/site';
+
+const { work } = home;
+// Highlighted phrases in the hero summary (content is static, so set:html is safe).
+const summary = home.summary
+  .replace('bootcamp-trained and self-driven', '<mark class="marker">bootcamp-trained and self-driven</mark>')
+  .replace('teaching background', '<mark class="marker">teaching background</mark>')
+  .replace('tests, deployment and honest documentation', '<mark class="marker">tests, deployment and honest documentation</mark>');
+---
+<Base title={home.title} description={home.description}>
+  <SiteHeader pop compact>
+    <div class="grid items-center gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
+      <div class="max-w-[40rem]">
+        <p class="mb-5 flex flex-wrap items-center gap-x-3 gap-y-1">
+          {home.tags.map((tag, i) => <span class:list={['mono-label', i === 0 ? 'font-medium text-signature' : 'text-muted']}>{tag}</span>)}
+        </p>
+        <h1 class="display text-ink">{site.name}</h1>
+        <p class="mb-4 mt-3 text-[clamp(1.0625rem,2vw,1.25rem)] leading-snug tracking-tight text-body">{home.tagline}</p>
+        <p class="mb-6 max-w-[34rem] text-base leading-[1.85] text-body" set:html={summary} />
+        <div class="flex flex-wrap gap-3">
+          {home.actions.map((action, i) => <Button href={action.href} variant={i === 0 ? 'primary' : 'secondary'} external={'external' in action}>{action.label}</Button>)}
+        </div>
+        <dl class="m-0 mt-7 grid max-w-[34rem] gap-x-6 gap-y-2 border-t border-line pt-4 text-sm sm:grid-cols-[5.5rem_1fr]">
+          <dt class="mono-label pt-0.5 text-muted">{home.skills.label}</dt><dd class="m-0 text-ink">{home.skills.text}</dd>
+          <dt class="mono-label pt-0.5 text-muted">Based</dt><dd class="m-0 text-ink">{site.availability.location} · {site.availability.setup} · {site.availability.timezone}</dd>
+        </dl>
+      </div>
+      <div class="ticks m-2 w-full max-w-[15rem] justify-self-center sm:max-w-[18rem] lg:justify-self-end">
+        <!-- Bookmark ribbon in the signature colour: the one deliberate pop of colour on the page. -->
+        <span aria-hidden="true" class="absolute -top-px right-5 z-10 block h-14 w-4 bg-signature [clip-path:polygon(0_0,100%_0,100%_100%,50%_80%,0_100%)]"></span>
+        <figure class="m-0 overflow-hidden rounded-[10px] border border-line bg-white shadow-card">
+          <!-- Line-art SVG traced to a single path on a transparent ground; a plain <img> because astro:assets does not resize SVGs. -->
+          <img src={heroImage.src} alt={home.heroImage.alt} width="459" height="572" fetchpriority="high" decoding="async" class="block aspect-[4/5] w-full object-contain object-center p-3 mix-blend-multiply" />
+        </figure>
+      </div>
+    </div>
+  </SiteHeader>
+  <main id="main">
+    <section id="overview" class="wrap scroll-mt-6 pt-12 sm:pt-16">
+      <SectionTitle>{home.facts.kicker}</SectionTitle>
+      <H2>{home.facts.heading}</H2>
+      <FunFacts items={home.facts.items} />
+    </section>
+
+    <section id="work" class="scroll-mt-6">
+      <div class="wrap pt-16 sm:pt-24">
+        <SectionTitle>{work.kicker}</SectionTitle>
+        <H2>{work.heading}</H2>
+        <p class="-mt-2 mb-8 max-w-[36rem] text-[clamp(1.0625rem,2vw,1.25rem)] leading-snug tracking-tight text-body">{work.intro}</p>
+        <FeaturedProject project={work.primary} image={{ src: citygoBrand.src, alt: 'Illustration of the Istanbul skyline at sunset with a map pin' }} />
+
+        <div class="mt-12">
+          <h3 class="mono-label mb-4 text-muted">{work.moreLabel}</h3>
+          <ul class="grid gap-5 md:auto-cols-fr md:grid-flow-col">
+            {otherProjects.map((project, i) => <li><OtherProject {...project} image={sunsetShot} index={String(i + 2).padStart(2, '0')} /></li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <ContactSection />
+  </main>
+  <SiteFootnote />
+</Base>

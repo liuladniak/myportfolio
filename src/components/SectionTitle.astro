@@ -1,0 +1,9 @@
+---
+import Marker from './Marker.astro';
+
+interface Props { edge?: 'both' | 'left' | 'right' }
+const { edge = 'both' } = Astro.props;
+---
+<p class="rule-title mono-label font-medium text-brand" data-edge={edge}>
+  {edge !== 'right' && <Marker side="l" />}<slot />{edge !== 'left' && <Marker side="r" />}
+</p>

@@ -1,0 +1,9 @@
+---
+interface Props { index: string; label: string }
+const { index, label } = Astro.props;
+---
+<div class="flex items-center gap-4 text-folio-soft">
+  <span class="font-mono-folio text-[11px] uppercase tracking-[0.2em]">{index}</span>
+  <span class="h-px flex-1 bg-folio-line"></span>
+  <span class="font-mono-folio text-[11px] uppercase tracking-[0.2em]">{label}</span>
+</div>

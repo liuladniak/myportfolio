@@ -1,0 +1,74 @@
+---
+import FigureShell from './FigureShell.astro';
+import MiniCalendar from './MiniCalendar.astro';
+import Sample from './Sample.astro';
+import type { FigureKind } from '../data/types';
+
+interface Props { kind: FigureKind; n: number }
+const { kind, n } = Astro.props;
+const captions: Record<FigureKind, string> = {
+  price: 'Price summary, three states',
+  details: 'Interface details',
+  roles: 'Manager-only pages',
+  availability: 'One rule, two screens',
+};
+const guests = [['Adults', 2], ['Children', 1], ['Infants', 0]] as const;
+const everyone = ['Dashboard', 'Tours', 'Schedule', 'Bookings', 'Tasks', 'Settings'];
+const managersOnly = ['Team', 'Guests', 'Analytics'];
+const rule = [['Tour', 'Bosphorus cruise'], ['Weekday', 'Mon'], ['Date', '14 Nov']];
+const row = 'flex justify-between py-0.5';
+---
+<FigureShell n={n} caption={captions[kind]}>
+  <div aria-hidden="true" class="flex flex-wrap items-start gap-x-5 gap-y-4 text-[13px]">
+    {kind === 'price' && (
+      <>
+        <Sample label="Loading">
+          <div class="my-1.5 h-2 w-3/4 rounded bg-line"></div>
+          <div class="my-1.5 h-2 w-1/2 rounded bg-line"></div>
+          <div class="mt-3 h-3 rounded bg-line"></div>
+        </Sample>
+        <Sample label="Ready">
+          <div class={row}><span>Adults × 2</span><span class="tabular-nums text-muted">$80</span></div>
+          <div class={row}><span>Children × 1</span><span class="tabular-nums text-muted">$30</span></div>
+          <div class={`${row} mt-1 border-t border-line pt-2 font-semibold`}><span>Total</span><span class="tabular-nums">$110</span></div>
+        </Sample>
+        <Sample label="Error">
+          <p class="mb-2">Couldn’t load the price.</p>
+          <span class="inline-block rounded-md border border-brand px-2.5 py-0.5 text-brand">Retry</span>
+        </Sample>
+      </>
+    )}
+    {kind === 'details' && (
+      <>
+        <Sample label="Currency" bare>
+          <div class="inline-flex overflow-hidden rounded-lg border border-[#d0cab6] text-xs">
+            {['USD', 'EUR', 'TRY'].map((code, i) => <span class:list={['px-3 py-1.5', i === 0 ? 'bg-brand text-white' : 'text-body']}>{code}</span>)}
+          </div>
+        </Sample>
+        <Sample label="Guests">
+          {guests.map(([name, count]) => <div class={row}><span>{name}</span><span class="tabular-nums text-muted">− {count} +</span></div>)}
+        </Sample>
+        <Sample label="Availability"><MiniCalendar start={12} unavailable={[13, 20, 22]} selected={16} /></Sample>
+      </>
+    )}
+    {kind === 'roles' && (
+      <>
+        <Sample label="Everyone signed in">
+          {everyone.map((page) => <div class={row}><span>{page}</span></div>)}
+        </Sample>
+        <Sample label="Admin and manager only">
+          {managersOnly.map((page) => <div class={row}><span>{page}</span><span class="text-muted">Locked</span></div>)}
+        </Sample>
+      </>
+    )}
+    {kind === 'availability' && (
+      <>
+        <Sample label="Dashboard: block a date">
+          {rule.map(([name, value]) => <div class={row}><span>{name}</span><span class="text-muted">{value}</span></div>)}
+          <span class="mt-1.5 inline-block rounded-md border border-brand bg-brand px-2.5 py-0.5 text-white">Save rule</span>
+        </Sample>
+        <Sample label="Client: date picker"><MiniCalendar start={10} unavailable={[10, 14, 17]} selected={19} /></Sample>
+      </>
+    )}
+  </div>
+</FigureShell>

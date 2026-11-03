@@ -1,0 +1,21 @@
+---
+import FigureShell from './FigureShell.astro';
+import Sample from './Sample.astro';
+import type { SampleRow } from '../data/types';
+
+interface Props { n: number; caption: string; items: { label: string; rows: SampleRow[] }[] }
+const { n, caption, items } = Astro.props;
+---
+<FigureShell n={n} caption={caption}>
+  <div aria-hidden="true" class="flex flex-wrap items-start gap-x-5 gap-y-4 text-[13px]">
+    {items.map((item) => (
+      <Sample label={item.label}>
+        {item.rows.map((row) => (
+          <div class="flex justify-between gap-3 py-0.5">
+            {typeof row === 'string' ? <span>{row}</span> : <><span>{row[0]}</span><span class="text-right text-muted">{row[1]}</span></>}
+          </div>
+        ))}
+      </Sample>
+    ))}
+  </div>
+</FigureShell>

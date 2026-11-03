@@ -1,0 +1,22 @@
+---
+interface Props { index: number; title: string; note: string; href?: string; current?: boolean }
+const { index, title, note, href, current = false } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+<Tag
+  href={href}
+  aria-current={current ? 'page' : undefined}
+  class:list={[
+    'flex h-full flex-col gap-0.5 rounded-[10px] border p-3.5 no-underline transition-colors',
+    current ? 'border-brand bg-brand text-white' : 'border-line bg-white text-ink',
+    href && !current && 'hover:border-brand',
+  ]}
+>
+  <span class:list={['mono-label flex items-center justify-between gap-2', current ? 'text-mist' : 'text-muted']}>
+    <span>{String(index + 1).padStart(2, '0')}</span>
+    {current && <span class="rounded-full border border-brand bg-white px-2 text-brand">You are here</span>}
+    {!href && <span>Soon</span>}
+  </span>
+  <b class="text-sm font-semibold">{title}</b>
+  <span class:list={['text-xs leading-snug', current ? 'text-mist' : 'text-muted']}>{note}</span>
+</Tag>

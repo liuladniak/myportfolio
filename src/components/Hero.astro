@@ -1,0 +1,47 @@
+---
+import type { ProjectPage } from '../data/types';
+import Button from './Button.astro';
+import SystemMap from './SystemMap.astro';
+
+interface Props { project: ProjectPage }
+const { project } = Astro.props;
+const { title, tagline, summary, status, links, breadcrumb, parts } = project;
+const position = parts.findIndex((part) => part.current) + 1;
+---
+<header class="hero-bg overflow-hidden">
+  <div class="wrap pb-16 pt-8 sm:pt-10">
+    <div class="mb-12 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-[13px] sm:mb-14">
+      <nav aria-label="Breadcrumb">
+        <ol class="flex flex-wrap font-mono text-xs text-muted">
+          {breadcrumb.map((crumb, i) => (
+            <li>
+              {crumb.href ? <a href={crumb.href} class="hover:underline">{crumb.label}</a> : <span aria-current="page">{crumb.label}</span>}
+              {i < breadcrumb.length - 1 && <span aria-hidden="true" class="px-1.5">/</span>}
+            </li>
+          ))}
+        </ol>
+      </nav>
+      <ul class="flex gap-4">
+        {links.live && <li><a href={links.live} class="hover:underline">Live site</a></li>}
+        <li><a href={links.repo} class="hover:underline">GitHub</a></li>
+      </ul>
+    </div>
+
+    <div class="max-w-3xl">
+      <p class="mb-4 flex flex-wrap items-center gap-3 text-[13px]">
+        <span class="inline-flex items-center gap-2 rounded-full border border-line bg-white px-3 py-1 font-semibold">
+          <i aria-hidden="true" class="size-2 rounded-full bg-[#378712]"></i>{status}
+        </span>
+        <span class="font-mono text-xs text-muted">CityGo · Part {position} of {parts.length}</span>
+      </p>
+      <h1 class="display">{title}</h1>
+      <p class="mb-5 mt-3 text-[clamp(1.0625rem,2.4vw,1.25rem)] tracking-tight text-body">{tagline}</p>
+      <p class="mb-6 max-w-[40rem] text-base leading-relaxed text-body">{summary}</p>
+      <div class="flex flex-wrap gap-3">
+        {links.actions.map((action, i) => <Button href={action.href} variant={i === 0 ? 'primary' : 'secondary'}>{action.label}</Button>)}
+      </div>
+    </div>
+
+    <SystemMap heading={`The CityGo system · ${parts.length} parts`} parts={parts} class="mt-16 sm:mt-[4.5rem]" />
+  </div>
+</header>

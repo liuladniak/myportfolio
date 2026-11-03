@@ -1,0 +1,10 @@
+---
+import Chips from './Chips.astro';
+
+interface Props { label: string; items: string[]; planned?: boolean; inProgress?: boolean }
+const { label, items, planned, inProgress } = Astro.props;
+---
+<div>
+  <p class="mono-label mb-1.5 text-muted">{label}</p>
+  <Chips items={items} planned={planned} inProgress={inProgress} />
+</div>

@@ -1,0 +1,9 @@
+---
+interface Props { pop?: boolean; compact?: boolean }
+const { pop = false, compact = false } = Astro.props;
+---
+<header class:list={['overflow-hidden', pop ? 'hero-pop' : 'hero-bright']}>
+  <div class:list={['wrap', compact ? 'pb-8 pt-9 sm:pb-10 sm:pt-10' : 'pb-10 pt-14 sm:pb-12 sm:pt-16']}>
+    <slot />
+  </div>
+</header>

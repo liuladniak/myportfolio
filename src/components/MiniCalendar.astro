@@ -1,0 +1,12 @@
+---
+interface Props { start: number; unavailable: number[]; selected: number }
+const { start, unavailable, selected } = Astro.props;
+const off = new Set(unavailable);
+const days = Array.from({ length: 14 }, (_, i) => start + i);
+---
+<div class="grid grid-cols-7 gap-0.5 text-center text-[11px]">
+  {[...'MTWTFSS'].map((d) => <span class="py-0.5 text-muted">{d}</span>)}
+  {days.map((day) => (
+    <span class:list={['rounded-md py-0.5', off.has(day) && 'text-[#a59e8a] line-through', day === selected && 'bg-brand text-white']}>{day}</span>
+  ))}
+</div>

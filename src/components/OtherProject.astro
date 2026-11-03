@@ -1,0 +1,19 @@
+---
+import FramedPicture from './FramedPicture.astro';
+interface Props { title: string; text: string; note: string; href?: string; index?: string; external?: boolean; image?: ImageMetadata; imageAlt?: string }
+const { title, text, note, href, index, external = false, image, imageAlt = '' } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+<Tag href={href} target={href && external ? '_blank' : undefined} rel={href && external ? 'noreferrer' : undefined} class:list={['card block h-full overflow-hidden text-ink no-underline', image && 'md:grid md:grid-cols-[0.8fr_1fr]', href && 'group transition-colors hover:border-brand']}>
+  {image && (
+    <div class="border-b border-line md:border-b-0 md:border-r">
+      <FramedPicture src={image} alt={imageAlt} ratio={[16, 11]} widths={[480, 720, 960]} sizes="(min-width: 48rem) 34rem, 92vw" position="top" />
+    </div>
+  )}
+  <div class="flex flex-col justify-center p-5 md:p-8">
+    <span class="mono-label text-muted">{index && `${index} · `}{note}</span>
+    <b class:list={['mb-1.5 mt-1 block text-xl font-semibold tracking-tight', href && 'group-hover:underline']}>{title}</b>
+    <span class="block max-w-[28rem] leading-relaxed text-body">{text}</span>
+    {href && <span class="mt-4 block text-sm font-medium text-brand">{external ? 'Visit the live site ↗' : 'Read more →'}</span>}
+  </div>
+</Tag>

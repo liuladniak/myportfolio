@@ -1,0 +1,11 @@
+---
+import { site } from '../data/site';
+---
+<footer class="wrap pb-[max(2rem,env(safe-area-inset-bottom))]">
+  <div class="flex flex-wrap items-center justify-between gap-x-8 gap-y-1 border-t border-line pt-4 text-muted">
+    <p class="mono-label py-1">© {new Date().getFullYear()} {site.name}</p>
+    <ul class="flex flex-wrap gap-x-6">
+      {site.nav.map((link) => <li><a href={link.href} class="mono-label inline-flex min-h-11 items-center text-muted no-underline hover:text-brand">{link.label}</a></li>)}
+    </ul>
+  </div>
+</footer>

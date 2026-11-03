@@ -1,0 +1,100 @@
+const repo = 'https://github.com/liuladniak/citygo';
+
+export const citygo = {
+  title: 'CityGo case study — Liu Ladniak',
+  description: 'CityGo: a booking platform for a city-tours agency. One storefront for travellers, one workbench for staff, and one shared backend. A case study by Liu.',
+  header: { back: { label: 'Back to index', href: '/' }, mark: 'Liu', label: 'Specimen I · Case study' },
+  plate: {
+    number: 'Plate Nº 01',
+    place: 'Istanbul · city tours',
+    kicker: 'Case study — full-stack platform',
+    lede: 'A booking platform for a city-tours agency: one storefront for travellers, one workbench for staff, and a single root system feeding both.',
+    links: [
+      { label: 'Client app', href: 'https://citygo.liuladniak.com', style: 'primary' },
+      { label: 'Dashboard', href: 'https://citygo-dashboard.liuladniak.com', style: 'secondary' },
+      { label: 'Source', href: repo, style: 'quiet' },
+    ],
+    figure: { image: 'rings', alt: 'Tree rings drawing', caption: 'Annuli temporis' },
+  },
+  facts: [
+    ['Role', 'Sole designer & engineer'],
+    ['Timeline', '2024 — ongoing'],
+    ['Systems', '3 apps · 2 services'],
+    ['Status', 'Live in production'],
+  ] as [string, string][],
+  overview: {
+    index: '§ 01',
+    label: 'Overview',
+    heading: ['The ', 'terrain'],
+    problem: {
+      label: 'The problem',
+      text: 'A small tour agency running one city: bookings scattered across email and spreadsheets, guides double-booked, payments reconciled by hand at the end of the week. That is the scenario CityGo is built around.',
+    },
+    response: {
+      label: 'The response',
+      text: 'One platform where availability, payments and staffing are the same data everywhere, so the traveller, the associate and the manager always see the same truth.',
+    },
+    audiences: [
+      ['Travellers', 'browse, filter, pay in their currency'],
+      ['Associates', 'create & manage bookings in 5 steps'],
+      ['Managers', 'assign guides, read revenue trends'],
+    ] as [string, string][],
+  },
+  reasoning: {
+    index: '§ 02',
+    label: 'Reasoning',
+    heading: ['Why it', 'grew ', 'this way'],
+    intro: 'Five decisions that shaped the system, with the road not taken beside each.',
+    image: { name: 'pressed', alt: '' },
+    items: [
+      { q: 'Why one shared backend?', a: 'The customer app and the staff dashboard read the same tours, bookings and availability. One Express + PostgreSQL server keeps a single source of truth, so a date blocked for a tour is blocked for every customer.', alt: 'Considered: separate APIs per app — rejected, duplicated business rules.' },
+      { q: 'Why webhook-driven bookings?', a: 'A booking is only created after Stripe confirms the payment. Making the webhook the trigger, rather than the browser, means a closed tab never leaves a half-paid booking behind.', alt: 'Considered: create-then-charge — rejected, orphaned drafts. Known gap: repeated events are not deduplicated yet.' },
+      { q: 'Why Redux on the client, TanStack Query on the dashboard?', a: 'Customers build a cart that must survive reloads: local, persistent state. Staff work with server data that changes under them: cache, refetch, invalidate. Different problems, different tools.', alt: 'Trade-off: two mental models, accepted for fit.' },
+      { q: 'Why a queue for notifications?', a: 'Confirmation and cancellation emails go onto a BullMQ + Redis queue for a separate worker, so a slow mail provider can no longer slow down checkout.', alt: 'Known gap: no retry settings yet, so a failed email is lost.' },
+      { q: 'Why role tiers, not permissions per user?', a: 'Admin, manager and associate map to how a small agency works. Server-side checks gate payments, cancellations, analytics and tour edits, and the dashboard hides what a role should not use.', alt: 'Known gap: settings and task routes still check sign-in, not role.' },
+    ],
+  },
+  architecture: {
+    index: '§ 03',
+    label: 'Architecture',
+    heading: 'Anatomy',
+    figure: 'fig. c — cross-section',
+    apps: ['Client — travellers', 'Dashboard — staff'],
+    root: { label: 'shared root', text: 'Express API · PostgreSQL' },
+    services: [
+      ['Notifications', 'BullMQ · Redis'],
+      ['Third parties', 'Stripe · Supabase · Brevo'],
+    ] as [string, string][],
+    layers: [
+      { name: 'Client', path: 'client/', stack: 'React · Redux Toolkit · SCSS · Stripe.js · Leaflet', note: 'Tour browsing, filters, cart, checkout, Istanbul map, travel guide.' },
+      { name: 'Dashboard', path: 'dashboard/', stack: 'React · TypeScript · TanStack Query · shadcn/ui', note: 'Booking lifecycle, 5-step creation, availability calendar, guides, analytics.' },
+      { name: 'Server', path: 'server/', stack: 'Node · Express · Knex · PostgreSQL · Supabase', note: 'Shared REST API, auth, Stripe webhooks, cron task generation.' },
+      { name: 'Notifications', path: 'notifications/', stack: 'TypeScript · BullMQ · Redis · Nodemailer', note: 'Confirmation and cancellation emails. Reminders run from the server.' },
+      { name: 'Chat service', path: 'ai-service/', stack: 'Python · FastAPI', note: 'Milo, an early chat helper that points travellers to a matching tour. AI-backed answers are planned.' },
+    ],
+  },
+  delivery: {
+    index: '§ 04',
+    label: 'Lifecycle & delivery',
+    lifecycleHeading: ['A booking’s ', 'life'],
+    lifecycle: [
+      ['Pending', 'entered, awaiting confirmation'],
+      ['Confirmed', 'payment confirmed'],
+      ['In progress', 'tour under way'],
+      ['Completed', 'tour done'],
+      ['Cancelled', 'email sent, may be refunded'],
+    ] as [string, string][],
+    deliveryHeading: ['From branch ', 'to field'],
+    branches: [['develop', 'Staging'], ['main', 'Production']] as [string, string][],
+    text: 'A self-hosted GitHub Actions runner deploys Docker Compose stacks to one VPS. Prometheus, Grafana and Loki watch it, and a smoke-test checklist follows every release. Playwright tests are planned and not written yet.',
+    images: ['branches', 'moss', 'leaf'],
+  },
+  reflection: {
+    index: '§ 05 — Still growing',
+    image: { name: 'tree', alt: '' },
+    quote: ['“The hardest part wasn’t any single feature. It was keeping ', 'one truth', ' about a tour shared by everyone who touches it.”'],
+    next: ['Demo-data seeder (in progress)', 'Playwright end-to-end tests, from an outline', 'Knex → Drizzle for typed queries', 'Server migration to TypeScript'],
+    link: { label: 'Back to all work', href: '/#work' },
+  },
+  footer: { left: '© 2026 Liu — CityGo case study', right: 'Istanbul · city tours' },
+};

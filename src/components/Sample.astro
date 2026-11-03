@@ -1,0 +1,8 @@
+---
+interface Props { label: string; bare?: boolean }
+const { label, bare = false } = Astro.props;
+---
+<div class="min-w-36 flex-1">
+  <p class="mono-label mb-1.5 text-muted">{label}</p>
+  <div class:list={[!bare && 'rounded-[10px] border border-line bg-white p-3 leading-normal']}><slot /></div>
+</div>

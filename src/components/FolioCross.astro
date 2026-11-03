@@ -1,0 +1,6 @@
+---
+import FolioIcon from './FolioIcon.astro';
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+<FolioIcon name="plus" class:list={['absolute size-3 text-folio-soft', className]} />

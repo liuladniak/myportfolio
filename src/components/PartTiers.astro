@@ -1,0 +1,56 @@
+---
+import type { PartRow } from '../data/types';
+
+interface Props { parts: PartRow[]; appsLabel: string; platformLabel: string; bridge: string }
+const { parts, appsLabel, platformLabel, bridge } = Astro.props;
+const number = (part: PartRow) => String(parts.indexOf(part) + 1).padStart(2, '0');
+const apps = parts.filter((part) => part.group === 'apps');
+const platform = parts.filter((part) => part.group === 'platform');
+---
+<div>
+  <p class="mono-label mb-4 font-medium text-brand">{appsLabel}</p>
+  <ul class="grid gap-5 md:grid-cols-2">
+    {apps.map((part) => (
+      <li class="card-lift group relative p-6 transition-colors hover:border-brand sm:p-7">
+        <div class="mb-5 flex items-center justify-between gap-3">
+          <span class="mono-label flex items-center gap-2 text-muted"><i aria-hidden="true" class="size-2.5 rounded-full" style={`background:${part.color}`}></i>{number(part)}</span>
+          <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-body">{part.tag}</span>
+        </div>
+        <h3 class="mb-1.5 text-xl font-semibold tracking-tight"><a href={part.href} class="text-ink no-underline after:absolute after:inset-0 group-hover:underline">{part.title}</a></h3>
+        <p class="max-w-[26rem] leading-relaxed text-body">{part.blurb}</p>
+        <div class="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm">
+          <span aria-hidden="true" class="text-brand">Read the part →</span>
+          {part.extras?.map((extra) => <a href={extra.href} class="relative z-10 text-body underline decoration-line underline-offset-4 hover:text-brand">{extra.label} →</a>)}
+        </div>
+      </li>
+    ))}
+  </ul>
+
+  <div aria-hidden="true" class="relative mx-auto my-3 flex h-14 w-px items-center bg-guide">
+    <i class="absolute -left-[3px] -top-[3px] size-[7px] border border-brand bg-white"></i>
+    <i class="absolute -bottom-[3px] -left-[3px] size-[7px] border border-brand bg-white"></i>
+    <span class="mono-label absolute left-4 whitespace-nowrap text-muted">{bridge}</span>
+  </div>
+
+  <p class="mono-label mb-4 text-muted">{platformLabel}</p>
+  {platform.map((part) => (
+    <article class="card p-5 sm:p-6">
+      <div class="mb-3 flex items-center justify-between gap-3">
+        <span class="mono-label flex items-center gap-2 text-muted"><i aria-hidden="true" class="size-2 rounded-full" style={`background:${part.color}`}></i>{number(part)}</span>
+        <span class="text-xs text-muted">{part.tag}</span>
+      </div>
+      <h3 class="mb-1 text-base font-semibold tracking-tight"><a href={part.href} class="text-ink no-underline hover:underline">{part.title} →</a></h3>
+      <p class="mb-4 max-w-[34rem] text-[13px] leading-snug text-muted">{part.blurb}</p>
+      <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {part.chapters?.map((chapter) => (
+          <li>
+            <a href={chapter.href} class="group block h-full rounded-lg border border-line p-3 text-ink no-underline transition-colors hover:border-brand">
+              <b class="mb-0.5 block text-sm font-semibold group-hover:underline">{chapter.title}</b>
+              <span class="block text-[13px] leading-snug text-muted">{chapter.blurb}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </article>
+  ))}
+</div>

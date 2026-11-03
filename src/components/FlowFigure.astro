@@ -1,0 +1,19 @@
+---
+import FigureShell from './FigureShell.astro';
+
+interface Props { n: number; caption: string; steps: { title: string; note: string }[] }
+const { n, caption, steps } = Astro.props;
+---
+<FigureShell n={n} caption={caption}>
+  <ol class="flex flex-wrap items-stretch gap-2 text-[13px]">
+    {steps.map((step, i) => (
+      <>
+        {i > 0 && <li aria-hidden="true" class="self-center text-brand">→</li>}
+        <li class="min-w-32 flex-1 rounded-[10px] border border-line bg-white p-3 leading-snug">
+          <b class="block font-semibold text-ink">{step.title}</b>
+          <span class="text-muted">{step.note}</span>
+        </li>
+      </>
+    ))}
+  </ol>
+</FigureShell>

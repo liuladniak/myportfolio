@@ -1,0 +1,27 @@
+---
+import type { PartRow } from '../data/types';
+
+interface Props { parts: PartRow[]; variant?: 'card' | 'flat'; class?: string }
+const { parts, variant = 'card', class: className } = Astro.props;
+const groupLabel = { apps: 'The apps', platform: 'The platform' };
+---
+<ol class:list={[variant === 'card' && 'card-lift overflow-hidden', className]}>
+  {parts.map((part, i) => (
+    <>
+      {part.group !== parts[i - 1]?.group && (
+        <li role="presentation" class:list={['mono-label border-b border-line bg-black/[0.02] px-5 py-2 text-muted', i > 0 && 'border-t']}>{groupLabel[part.group]}</li>
+      )}
+      <li class="border-t border-line first:border-t-0 [&:nth-child(2)]:border-t-0">
+        <a href={part.href} class="group grid min-h-11 grid-cols-[2.25rem_1fr_auto] items-center gap-x-3 px-5 py-3.5 text-ink no-underline transition-colors hover:bg-[#f8f6ee]">
+          <span class="flex items-center gap-2"><i aria-hidden="true" class="size-2 rounded-full" style={`background:${part.color}`}></i><span class="mono-label text-muted">{String(i + 1).padStart(2, '0')}</span></span>
+          <span>
+            <b class="block text-sm font-semibold">{part.title}</b>
+            <span class="block text-[13px] leading-snug text-muted">{part.blurb}</span>
+            {part.extras?.map((extra) => <span class="mt-0.5 block text-[13px] leading-snug text-brand">+ {extra.label.replace('Includes ', '')}</span>)}
+          </span>
+          <span aria-hidden="true" class="text-brand transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none">→</span>
+        </a>
+      </li>
+    </>
+  ))}
+</ol>

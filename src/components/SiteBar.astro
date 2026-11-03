@@ -1,0 +1,26 @@
+---
+import Marker from './Marker.astro';
+import { site } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<header class="sticky top-0 z-40 border-b border-[#d9d4c3] bg-white/80 pt-[env(safe-area-inset-top)] backdrop-blur-md">
+  <div class="wrap">
+    <div class="relative flex min-h-14 flex-wrap items-center justify-between gap-x-3 text-[13px] sm:gap-x-6 sm:text-sm">
+      <Marker side="l" y="100%" /><Marker side="r" y="100%" />
+      <div class="flex min-w-0 items-center gap-2.5 sm:gap-3">
+        <a href="/" class="inline-flex min-h-11 items-center font-semibold text-ink no-underline" aria-current={path === '/' ? 'page' : undefined}>{site.name}</a>
+        <p class="m-0 inline-flex items-center gap-1.5 rounded-full border border-[#c9d3b0] bg-white/70 px-2 py-0.5 text-[11px] font-medium text-ink sm:gap-2 sm:px-3 sm:py-1 sm:text-xs">
+          <i aria-hidden="true" class="size-1.5 shrink-0 rounded-full bg-[#34c759] sm:size-2"></i><span class="sm:hidden">{site.statusShort}</span><span class="hidden sm:inline">{site.status}</span>
+        </p>
+      </div>
+      <nav aria-label="Primary">
+        <ul class="flex gap-0.5 sm:gap-3">
+          {site.nav.map((link) => (
+            <li><a href={link.href} aria-current={path === link.href ? 'page' : undefined} class="inline-flex min-h-11 items-center rounded-md px-1 font-medium text-ink/80 sm:px-2 no-underline hover:text-brand aria-[current=page]:font-bold aria-[current=page]:text-ink">{link.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

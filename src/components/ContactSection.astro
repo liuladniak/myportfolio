@@ -1,0 +1,48 @@
+---
+import FramedPicture from './FramedPicture.astro';
+import H2 from './H2.astro';
+import SectionTitle from './SectionTitle.astro';
+import CopyButton from './CopyButton.astro';
+import { home, site } from '../data/site';
+
+// Uses src/assets/contact-image.svg when it exists, otherwise contact-image.png.
+const found = import.meta.glob<{ default: ImageMetadata }>('../assets/contact-image.{svg,png}', { eager: true });
+const contactImage = (found['../assets/contact-image.svg'] ?? found['../assets/contact-image.png']).default;
+const isSvg = contactImage.format === 'svg';
+const { contact } = home;
+const { email, github, linkedin } = site.contact;
+const elsewhere = [
+  { label: 'GitHub', href: github, value: github },
+  { label: 'LinkedIn', href: linkedin, value: linkedin },
+];
+---
+<section id="contact" class="wrap scroll-mt-6 pb-16 pt-16 sm:pb-24 sm:pt-24">
+  <SectionTitle>{contact.kicker}</SectionTitle>
+  <H2>{contact.heading}</H2>
+  <div class="mt-8 grid items-center gap-12 lg:grid-cols-[0.9fr_1fr] lg:gap-20">
+    <figure class="m-0 w-full max-w-[20rem] justify-self-start sm:max-w-[24rem] lg:max-w-[26rem]">
+      <!-- No frame: the line art sits straight on the paper, multiplied so any white in the file disappears. -->
+      {isSvg
+        ? <img src={contactImage.src} alt={contact.imageAlt} width={contactImage.width} height={contactImage.height} loading="lazy" decoding="async" class="block h-auto w-full mix-blend-multiply" />
+        : <FramedPicture src={contactImage} alt={contact.imageAlt} ratio={[4, 5]} widths={[320, 480, 640]} sizes="(min-width: 64rem) 26rem, 22rem" />}
+    </figure>
+    <div>
+      <p class="mb-5 font-serif text-[clamp(1.75rem,3vw,2.25rem)] font-medium leading-[1.15] tracking-tight text-ink">{contact.lead} <em class="text-signature">{contact.emphasis}</em></p>
+      <p class="mb-8 max-w-[28rem] text-base leading-relaxed text-body">{contact.text}</p>
+      <div class="mb-7 flex flex-wrap items-center gap-x-3 gap-y-1">
+        <a href={`mailto:${email}`} class="group inline-flex min-h-11 items-center gap-3 border-b border-signature pb-0.5 font-serif text-[clamp(1.25rem,2vw,1.5rem)] italic text-ink no-underline hover:text-signature">
+          {email}<span aria-hidden="true" class="not-italic">↗</span>
+        </a>
+        <CopyButton value={email} label="Copy Email" showText class="rounded-lg text-muted hover:text-ink" />
+      </div>
+      <ul class="flex flex-wrap gap-x-7 gap-y-1">
+        {elsewhere.map((link) => (
+          <li class="flex items-center">
+            <a href={link.href} class="mono-label inline-flex min-h-11 items-center gap-2 text-body no-underline hover:text-brand"><span aria-hidden="true" class="text-muted">↳</span>{link.label}</a>
+            <CopyButton value={link.value} label={`Copy ${link.label}`} class="rounded-lg text-muted hover:text-ink" />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

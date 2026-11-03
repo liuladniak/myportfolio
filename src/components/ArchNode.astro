@@ -1,0 +1,9 @@
+---
+import type { ArchNodeData } from '../data/types';
+
+interface Props extends ArchNodeData {}
+const { title, note, highlight = false, linked = false } = Astro.props;
+---
+<li class:list={['rounded-[10px] border p-2.5 text-center text-[13px]', highlight ? 'border-brand bg-brand text-white' : linked ? 'border-brand bg-white' : 'border-[#d9d4c3] bg-white']}>
+  <b class="block font-semibold">{title}</b>{note}
+</li>

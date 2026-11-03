@@ -1,0 +1,42 @@
+---
+import type { ProjectPage } from '../data/types';
+import ArchNode from './ArchNode.astro';
+import H2 from './H2.astro';
+import SectionTitle from './SectionTitle.astro';
+import SpecRows from './SpecRows.astro';
+
+interface Props { project: ProjectPage }
+const { project } = Astro.props;
+const { stack, architecture } = project;
+const tiers = [
+  { nodes: architecture.apps, cols: 'grid-cols-2' },
+  { nodes: [architecture.api], cols: 'grid-cols-1' },
+  { nodes: architecture.services, cols: architecture.services.length === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-3' },
+];
+---
+<section id="architecture" class="wrap scroll-mt-6 pt-16 sm:pt-20">
+  <div class="grid gap-12 lg:grid-cols-2">
+    <div>
+      <SectionTitle edge="left">Tech stack</SectionTitle>
+      <H2>Built with</H2>
+      <SpecRows rows={stack} />
+    </div>
+    <div>
+      <SectionTitle edge="right">Architecture</SectionTitle>
+      <H2>How it fits together</H2>
+      <figure class="rounded-xl border border-[#d9d4c3] bg-[#f8f6ee] p-5">
+        <figcaption class="sr-only">{architecture.caption}</figcaption>
+        {tiers.map((tier, i) => (
+          <>
+            {i > 0 && <p aria-hidden="true" class="my-1.5 text-center leading-none text-brand">↓</p>}
+            <ul class:list={['grid gap-3', tier.cols]}>
+              {tier.nodes.map((node) => <ArchNode {...node} />)}
+            </ul>
+          </>
+        ))}
+        {architecture.note && <p class="mt-3.5 text-[13px] text-muted">{architecture.note}</p>}
+        {architecture.observability && <p class="mt-3.5 text-[13px] text-muted">Observability: {architecture.observability}</p>}
+      </figure>
+    </div>
+  </div>
+</section>

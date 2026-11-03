@@ -1,0 +1,16 @@
+---
+import Chips from './Chips.astro';
+
+interface Props { rows: { label: string; items: string[] }[]; chips?: boolean }
+const { rows, chips = true } = Astro.props;
+---
+<dl class="card ticks px-5 py-1.5">
+  {rows.map((row) => (
+    <div class="grid grid-cols-[5.5rem_1fr] gap-4 border-t border-line py-3.5 first:border-t-0">
+      <dt class="mono-label pt-1 text-muted">{row.label}</dt>
+      <dd>
+        {chips ? <Chips items={row.items} /> : <ul class="space-y-1.5 leading-snug">{row.items.map((item) => <li>{item}</li>)}</ul>}
+      </dd>
+    </div>
+  ))}
+</dl>

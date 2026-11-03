@@ -1,0 +1,39 @@
+---
+import { Picture } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** Width : height of the frame. The image is cropped to it, never the other way round. */
+  ratio: [number, number];
+  widths: number[];
+  sizes: string;
+  /** Which part of the image stays visible when it is cropped (CSS object-position). */
+  position?: string;
+  loading?: 'eager' | 'lazy';
+  class?: string;
+  /** Extra classes for the <img> itself, e.g. a colour filter. */
+  imgClass?: string;
+}
+const { src, alt, ratio, widths, sizes, position = 'center', loading = 'lazy', class: className, imgClass } = Astro.props;
+const [w, h] = ratio;
+const width = Math.max(...widths);
+const height = Math.round((width * h) / w);
+---
+<div class:list={['overflow-hidden bg-[var(--chip-bg)]', className]} style={`aspect-ratio:${w}/${h}`}>
+  <Picture
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    widths={widths}
+    sizes={sizes}
+    fit="cover"
+    position={position}
+    formats={['avif', 'webp']}
+    loading={loading}
+    pictureAttributes={{ class: 'block h-full w-full' }}
+    class:list={['block h-full w-full object-cover', imgClass]}
+    style={`object-position:${position}`}
+  />
+</div>
