@@ -101,21 +101,15 @@ import { diagram } from '../data/citygo-diagram';
       <SectionTitle>{c.next.kicker}</SectionTitle>
       <H2>{c.next.heading}</H2>
       <p class="-mt-2 mb-8 max-w-[38rem] text-body">{c.next.intro}</p>
-      <ul class="m-0 grid list-none gap-5 p-0 md:grid-cols-3">
-        {c.next.groups.map((g) => (
-          <li class="card p-5">
-            <h3 class="mono-label m-0 mb-4 font-medium text-brand">{g.title}</h3>
-            {g.inProgress.length > 0 && (
-              <div class="mb-4">
-                <p class="mono-label mb-1.5 text-muted">In progress</p>
-                <Chips items={g.inProgress} inProgress />
-              </div>
-            )}
-            <p class="mono-label mb-1.5 text-muted">Planned</p>
-            <Chips items={g.planned} planned />
+            <ol class="relative m-0 ml-2 list-none border-l-2 border-dashed border-line p-0 pl-8 sm:pl-10">
+        {c.next.rows.map((row) => (
+          <li class="relative pb-9 last:pb-0">
+            <i aria-hidden="true" class="absolute -left-[2.75rem] top-0.5 grid size-5 place-items-center rounded-full border-2 bg-[#f8f5ee] sm:-left-[3.25rem]" style={`border-color:${row.color}`}><b class="size-1.5 rounded-full" style={`background:${row.color}`}></b></i>
+            <h3 class="m-0 text-xl font-semibold leading-tight tracking-tight text-ink">{row.area}</h3>
+            <p class="m-0 mt-1.5 max-w-[40rem] leading-relaxed text-body">{row.place}</p>
           </li>
         ))}
-      </ul>
+      </ol>
     </section>
   </main>
   <SiteFooter />

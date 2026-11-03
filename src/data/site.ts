@@ -17,9 +17,9 @@ export const site = {
   // TODO: replace the placeholders below; they are shown in the homepage hero and on the About page.
   cv: "/Liu-Ladniak-CV.pdf",
   availability: {
-    location: "İstanbul, Türkiye",
+    location: "Toronto, Canada",
     setup: "remote / hybrid / open to relocation",
-    timezone: "UTC+3",
+    timezone: "UTC-5",
   },
   footer: {
     title: "Get in touch",
@@ -235,9 +235,9 @@ export const about = {
   heading: "My journey",
   kicker: "About & contact",
   story: [
-    "I started in construction. I studied building and civil engineering in Vinnytsia, and it taught me to check the foundations before anything is built on top of them. I still work that way: write the decisions down and say what isn’t finished.",
-    "I moved into software through the BrainStation bootcamp in Toronto, finished the Software Engineering diploma, won first place in its Industry Project Competition, and then stayed on as a teaching assistant. I mentored 50+ students and reviewed their code, which taught me that explaining a decision to someone else is the fastest way to find out whether it was a good one. I have also built a website for Sunset Pizza & Grill Shop in Pittsburgh.",
-    "Today I’m looking for a junior full-stack role on a team where code review is part of the week. My main project, CityGo, is live and documented, gaps included. I work in English and Ukrainian.",
+    "My background combines engineering, software development, and teaching. I graduated with a Master's degree with honors in Building and Civil Engineering from Vinnytsia National Technical University in 2018.",
+    "I later completed BrainStation's Software Engineering program in Toronto, Canada, and stayed on as a teaching assistant, mentoring more than 50 students and reviewing their work. I also spent several years in the US, taking on freelance work and developing my skills in web development.",
+    "I'm now looking for a full-stack developer role where I can contribute to a team, learn from experienced engineers, and keep growing. I work comfortably in English and Ukrainian.",
   ],
   portrait: {
     alt: "Liu Ladniak walking through a greenhouse entrance, seen from behind",
