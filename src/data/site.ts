@@ -8,7 +8,7 @@ export const site = {
     { label: "About & contact", href: "/about" },
   ],
   contact: {
-    email: "liuladniak@gnail.com",
+    email: "liuladniak@gmail.com",
     github: "https://github.com/liuladniak",
     linkedin: "https://www.linkedin.com/in/liuladniak/",
   },
